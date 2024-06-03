@@ -1,18 +1,17 @@
 model:
   base_learning_rate: 4.5e-06
-  target: taming.models.vqgan.VQModel
+  target: taming.models.vqgan.VQSegmentationModel
   params:
-    ckpt_path: logs/ade20k_vqgan/checkpoints/last.ckpt
     embed_dim: 256
     n_embed: 1024
+    image_key: "segmentation"
+    n_labels: 183
     ddconfig:
-      name: ade20k
-      semantic_channels: 151
       double_z: false
       z_channels: 256
       resolution: 256
-      in_channels: 3
-      out_ch: 3
+      in_channels: 183
+      out_ch: 183
       ch: 128
       ch_mult:
       - 1
@@ -26,26 +25,25 @@ model:
       dropout: 0.0
 
     lossconfig:
-      target: taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
+      target: taming.modules.losses.segmentation.BCELossWithQuant
       params:
-        disc_conditional: False
-        disc_in_channels: 3
-        disc_start: 30001
-        disc_weight: 0.8
         codebook_weight: 1.0
 
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 10
-    num_workers: 8
+    batch_size: 12
     train:
-      target: taming.data.ade20k.Ade20kTrain
+      target: taming.data.coco.CocoImagesAndCaptionsTrain
       params:
-        size: 286
+        size: 296
         crop_size: 256
+        onehot_segmentation: true
+        use_stuffthing: true
     validation:
-      target: taming.data.ade20k.Ade20kValidation
+      target: taming.data.coco.CocoImagesAndCaptionsValidation
       params:
         size: 256
         crop_size: 256
+        onehot_segmentation: true
+        use_stuffthing: true

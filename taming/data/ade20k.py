@@ -42,7 +42,8 @@ class Ade20kBase(Dataset):
         image = self.im_rescaler(image=image)["image"]
         image = (image/127.5 - 1.0).astype(np.float32)
 
-        seg_path = image_path.replace('jpg', 'png')
+        seg_path = image_path.replace('.jpg', '_seg.png')
+        # seg_path = image_path
         seg = Image.open(seg_path)
         seg = np.array(seg)
         seg = self.seg_rescaler(image=seg)["image"]
@@ -71,8 +72,10 @@ class Base(Dataset):
 class AdeTrain(Base):
     def __init__(self, size, keys=None):
         super().__init__()
-        root = '/opt/tiger/fnzhan/datasets/ADEChallengeData2016/images/training'
-        with open("data/ade20ktrain.txt", "r") as f:
+        # root = '/opt/tiger/fnzhan/datasets/ADEChallengeData2016/images/training'
+        root = '/data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE'
+        # with open("data/ade20ktrain.txt", "r") as f:
+        with open("/data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/train2.txt", "r") as f:
             relpaths = f.read().splitlines()
         paths = [os.path.join(root, relpath.split(',')[0]) for relpath in relpaths]
         self.data = Ade20kBase(paths=paths, size=size, random_crop=False)
@@ -81,8 +84,10 @@ class AdeTrain(Base):
 class AdeValidation(Base):
     def __init__(self, size, keys=None):
         super().__init__()
-        root = '/opt/tiger/fnzhan/datasets/ADEChallengeData2016/images/validation'
-        with open("data/ade20kvalidation.txt", "r") as f:
+        # root = '/opt/tiger/fnzhan/datasets/ADEChallengeData2016/images/validation'
+        root = '/data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE'
+        # with open("data/ade20kvalidation.txt", "r") as f:
+        with open("/data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/test2.txt", "r") as f:
             relpaths = f.read().splitlines()
         paths = [os.path.join(root, relpath.split(',')[0]) for relpath in relpaths]
         self.data = Ade20kBase(paths=paths, size=size, random_crop=False)

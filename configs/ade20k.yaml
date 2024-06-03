@@ -1,0 +1,68 @@
+model:
+  base_learning_rate: 4.5e-06
+  target: taming.models.vqgan.VQModel
+  params:
+    
+    ckpt_path: ~ #Put ckpt path for inference  #logs/ade20k_vqgan/checkpoints/last.ckpt
+    embed_dim: 256
+    scale: 1       #Adjust the scale for k to increase or decrease k. if scale=1, k=n_embed,if scale=0.5, k=n_embed/2
+    partitions: 4  #partition number d in paper
+    n_embed: 1024  #K in paper 
+    keplerlossconfig:
+      target: taming.modules.losses.kepler.KeplerLoss
+      params:
+        use: False
+        kl_weight: 1e-8
+        n_e: 1024
+        
+    partitionconfig:
+      target: taming.modules.partition.partition.CustomPartition
+      params:
+        partitions: 4
+    ddconfig:
+      name: ade20k
+      semantic_channels: 151
+      double_z: false
+      z_channels: 256
+      resolution: 256
+      in_channels: 3
+      out_ch: 3
+      ch: 128
+      ch_mult:
+      - 1
+      - 1
+      - 2
+      - 2
+      - 4
+      num_res_blocks: 2
+      attn_resolutions:
+      - 16
+      dropout: 0.0
+
+    lossconfig:
+      target: taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
+      params:
+        disc_conditional: False
+        disc_in_channels: 3
+        disc_start: 1
+        disc_weight: 0.8
+        codebook_weight: 1.0
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 1
+    num_workers: 8
+    train:
+      target: taming.data.custom.CustomTrain
+      params:
+        training_images_list_file: /data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/train1.txt
+        size: 256
+        # crop_size: 256
+    validation:
+      target: taming.data.custom.CustomTest
+      params: 
+        test_images_list_file: /data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/test1.txt
+        size: 256
+        # crop_size: 256
+

@@ -6,9 +6,10 @@ You can download our pretrained models on ADE20K and CelebA-HQ for reconstructio
 ## Dataset
 You can download ADE20K dataset following [ADE20K](https://github.com/CSAILVision/ADE20K) and [CelebAMask-HQ](https://github.com/switchablenorms/CelebAMask-HQ)
 
-## Evaluation
-### Reconstruction
 
+## Evaluation
+Please follow [Taming](https://github.com/CompVis/taming-transformers).
 
 
 ## Training
+Please follow [Taming](https://github.com/CompVis/taming-transformers).

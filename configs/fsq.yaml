@@ -1,20 +1,10 @@
-model:
+model: # fsq
   base_learning_rate: 4.5e-06
-  target: taming.models.vqgan.MixVQ
+  target: taming.models.vqgan.VQModel
   params:
-    ckpt_path: logs/ade20k_mixvq_best/checkpoints/last.ckpt
-    kl_weight: 1.0e-08
-    embed_dim: 256
+    # ckpt_path: logs/ade20k_vqgan/checkpoints/last.ckpt
+    embed_dim: 4
     n_embed: 1024
-    monitor: val/rec_loss
-    temperature_scheduler_config:
-      target: taming.lr_scheduler.LambdaWarmUpCosineScheduler
-      params:
-        warm_up_steps: 0
-        max_decay_steps: 1000001
-        lr_start: 0.9
-        lr_max: 0.9
-        lr_min: 1.0e-06
     ddconfig:
       name: ade20k
       semantic_channels: 151
@@ -34,27 +24,31 @@ model:
       attn_resolutions:
       - 16
       dropout: 0.0
+
     lossconfig:
       target: taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
       params:
-        disc_conditional: false
+        disc_conditional: False
         disc_in_channels: 3
-        disc_start: 1 #30001
+        disc_start: 1
         disc_weight: 0.8
         codebook_weight: 1.0
 
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 10
+    batch_size: 8
     num_workers: 8
     train:
-      target: taming.data.ade20k.Ade20kTrain
+      target: taming.data.custom.CustomTrain
       params:
-        size: 286
-        crop_size: 256
-    validation:
-      target: taming.data.ade20k.Ade20kValidation
-      params:
+        training_images_list_file: /data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/train1.txt
         size: 256
-        crop_size: 256
+        # crop_size: 256
+    validation:
+      target: taming.data.custom.CustomTest
+      params: 
+        test_images_list_file: /data1/lianjunrong/dataset/ADE20K/ADE20K_2021_17_01/images/ADE/test1.txt
+        size: 256
+        # crop_size: 256
+

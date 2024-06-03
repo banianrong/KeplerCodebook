@@ -3,6 +3,7 @@ import math
 import torch
 import torch.nn as nn
 import numpy as np
+from taming.bn import myBatchNorm, myGroupNorm
 
 
 def get_timestep_embedding(timesteps, embedding_dim):
@@ -32,7 +33,9 @@ def nonlinearity(x):
 
 
 def Normalize(in_channels):
-    return torch.nn.GroupNorm(num_groups=32, num_channels=in_channels, eps=1e-6, affine=True)
+    return myGroupNorm(num_groups=32, num_channels=in_channels, eps=1e-6, affine=True)
+    # return myBatchNorm(num_channels=in_channels, eps=1e-6, affine=True) 
+    # return torch.nn.GroupNorm(num_groups=32, num_channels=in_channels, eps=1e-6, affine=True)
 
 
 class Upsample(nn.Module):

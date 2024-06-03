@@ -30,12 +30,19 @@ class ImagePaths(Dataset):
         self._length = len(paths)
 
         if self.size is not None and self.size > 0:
+            if random_crop:
+                self.size = 286
             self.rescaler = albumentations.SmallestMaxSize(max_size = self.size)
             if not self.random_crop:
                 self.cropper = albumentations.CenterCrop(height=self.size,width=self.size)
             else:
+                self.size = 256
                 self.cropper = albumentations.RandomCrop(height=self.size,width=self.size)
-            self.preprocessor = albumentations.Compose([self.rescaler, self.cropper])
+                self.flip = albumentations.HorizontalFlip(always_apply=False, p=0.5)
+            if not self.random_crop:
+                self.preprocessor = albumentations.Compose([self.rescaler, self.cropper])
+            else:
+                self.preprocessor = albumentations.Compose([self.rescaler, self.cropper, self.flip])
         else:
             self.preprocessor = lambda **kwargs: kwargs
 

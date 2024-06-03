@@ -25,7 +25,7 @@ class CustomTrain(CustomBase):
         super().__init__()
         with open(training_images_list_file, "r") as f:
             paths = f.read().splitlines()
-        self.data = ImagePaths(paths=paths, size=size, random_crop=False)
+        self.data = ImagePaths(paths=paths, size=size, random_crop=True)
 
 
 class CustomTest(CustomBase):
