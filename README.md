@@ -1,5 +1,7 @@
-# KeplerCodebook
+![image](https://github.com/banianrong/KeplerCodebook/assets/67585211/313e4675-31f2-4f90-b583-deb55ea519aa)# KeplerCodebook
 This is the official implementation of ICML2024 "Kepler Codebook"
+
+This repository is currently undergoing updates. Please check back later for new features, improvements, and detailed documentation.
 
 ## Pretrained Models
 You can download our pretrained models on ADE20K and CelebA-HQ for reconstruction and generation tasks in [Google Drive](https://drive.google.com/drive/folders/1OLtHNs7NVV8aFaSsyN45Mc_8EwBEF-J6?usp=drive_link).
