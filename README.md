@@ -1,4 +1,4 @@
-![image](https://github.com/banianrong/KeplerCodebook/assets/67585211/313e4675-31f2-4f90-b583-deb55ea519aa)# KeplerCodebook
+# KeplerCodebook
 This is the official implementation of ICML2024 "Kepler Codebook"
 
 This repository is currently undergoing updates. Please check back later for new features, improvements, and detailed documentation.
