@@ -16,7 +16,7 @@ model:
         n_e: 1024
         
     partitionconfig:
-      target: taming.modules.partition.partition.CustomPartition
+      target: taming.modules.partition.partition.GroupPartition
       params:
         partitions: 4
     ddconfig:
